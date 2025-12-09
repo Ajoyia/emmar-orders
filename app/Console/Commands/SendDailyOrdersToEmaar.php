@@ -74,7 +74,7 @@ class SendDailyOrdersToEmaar extends Command
         }
         $curl = curl_init();
         $arr = array(
-            CURLOPT_URL => env('EMAAR_DAILY_API_URL'),
+            CURLOPT_URL => config('emaar.daily_url'),
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -150,7 +150,7 @@ class SendDailyOrdersToEmaar extends Command
         }
         }',
             CURLOPT_HTTPHEADER => array(
-                'x-apikey: ' . env('EMAAR_XAPIKEY'),
+                'x-apikey: ' . config('emaar.x_api_key'),
                 'Content-Type: application/json',
                 'Cookie: EmaarCookie=!tAB8Pf0MVogZ81obZ8iAVHPu2zwut7wDvb73T7QDsF0aUCzEuhjUSUZvMZiwD0VeouOB5V0+Kv66YS0=; TS01fca733=01eddcdb62efcffc8d0c00e6f84b95c8e52b17e81cea2ca77195390615b40d588afa878e1d5303b9f77dea3f21bae0300a2f41b0b1'
             ),

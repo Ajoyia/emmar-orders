@@ -72,7 +72,7 @@ class OrderController extends Controller
             CURLOPT_CUSTOMREQUEST => 'GET',
             CURLOPT_POSTFIELDS => "<file contents here>",
             CURLOPT_HTTPHEADER => array(
-                'Authorization: Bearer ' . env('LIST_ORDERS_BEARER_TOKEN'),
+                'Authorization: Bearer ' . config('foodics.list_orders_token'),
                 'Accept: application/json',
                 'Content-Type: application/json'
             ),

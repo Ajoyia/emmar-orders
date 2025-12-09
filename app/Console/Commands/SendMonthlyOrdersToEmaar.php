@@ -78,7 +78,7 @@ class SendMonthlyOrdersToEmaar extends Command
        
         $curl = curl_init();
         $arr = array(
-            CURLOPT_URL => env('EMAAR_MONTHLY_API_URL'),
+            CURLOPT_URL => config('emaar.monthly_url'),
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -156,7 +156,7 @@ class SendMonthlyOrdersToEmaar extends Command
         }
         }',
             CURLOPT_HTTPHEADER => array(
-                'x-apikey: ' . env('EMAAR_XAPIKEY'),
+                'x-apikey: ' . config('emaar.x_api_key'),
                 'Content-Type: application/json',
                 'Cookie: EmaarCookie=!tAB8Pf0MVogZ81obZ8iAVHPu2zwut7wDvb73T7QDsF0aUCzEuhjUSUZvMZiwD0VeouOB5V0+Kv66YS0=; TS01fca733=01eddcdb6230bb43843ae89e1ad8382a82e2ba8d05fc8333a21e1889d2c615540e93a6807dee364624a6955deb89639270a87e294b'
             ),
