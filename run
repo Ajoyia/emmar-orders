@@ -1,0 +1,22 @@
+#!/bin/bash
+# @author WebTeam@INDEX.ae
+
+case $1 in
+     cc | cv | vc | rc )
+          echo "Clearing Cache"
+          php artisan cache:clear
+          php artisan view:clear
+          php artisan config:clear
+          php artisan route:clear
+	  echo "Composer dump autoload"
+	  composer dump-autoload
+          ;;
+     db)
+          php artisan migrate
+          ;;
+    seed)
+        php artisan db:seed --class=$2
+esac
+
+
+
