@@ -173,20 +173,20 @@ class SendMonthlyOrdersToEmaar extends Command
                     ]);
             }
         }
-        // $obj = new stdClass();
+        $obj = new stdClass();
 
-        // $obj->UnitNo = $branch_unit_no;
-        // $obj->LeaseCode = $branch_lease_code;
-        // $obj->SalesDateFrom = $first_date_of_last_month;
-        // $obj->SalesDateTo = $last_date_of_last_month;
-        // $obj->TransactionCount = $monthly_orders->count();
-        // $obj->TotalSales = round($monthly_orders->sum('net_amount_without_tax'), 2);
-        // $obj->Ch_DineIn = $Ch_DineIn;
-        // $obj->Ch_Talabat = $Ch_Talabat;
-        // $obj->Ch_Drivu = $Ch_Drivu;
-        // $obj->Ch_DineIncnt = $Ch_DineIncnt;
-        // $obj->Ch_Talabatcnt = $Ch_Talabatcnt;
-        // $obj->Ch_Drivucnt = $Ch_Drivucnt;
+        $obj->UnitNo = $branch_unit_no;
+        $obj->LeaseCode = $branch_lease_code;
+        $obj->SalesDateFrom = $first_date_of_last_month;
+        $obj->SalesDateTo = $last_date_of_last_month;
+        $obj->TransactionCount = $monthly_orders->count();
+        $obj->TotalSales = round($monthly_orders->sum('net_amount_without_tax'), 2);
+        $obj->Ch_DineIn = $Ch_DineIn;
+        $obj->Ch_Talabat = $Ch_Talabat;
+        $obj->Ch_Drivu = $Ch_Drivu;
+        $obj->Ch_DineIncnt = $Ch_DineIncnt;
+        $obj->Ch_Talabatcnt = $Ch_Talabatcnt;
+        $obj->Ch_Drivucnt = $Ch_Drivucnt;
 
         $response = curl_exec($curl);
         DB::table('logs')->insert([

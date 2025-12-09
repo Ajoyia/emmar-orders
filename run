@@ -1,5 +1,4 @@
 #!/bin/bash
-# @author WebTeam@INDEX.ae
 
 case $1 in
      cc | cv | vc | rc )

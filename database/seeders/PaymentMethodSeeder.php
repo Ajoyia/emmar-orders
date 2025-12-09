@@ -91,7 +91,7 @@ class PaymentMethodSeeder extends Seeder
                 'emmar_mapping' => 'Ch_DineIn',
                 'payment_id' => '96742fa9-b9f8-4740-a406-a80c1a57cb85'
             ], [
-                'name' => 'House A/C Settlement - INDEX',
+                'name' => 'House A/C Settlement',
                 'emmar_mapping' => 'Ch_DineIn',
                 'payment_id' => '97be478b-88fa-486a-b964-661d008fe481'
             ]
