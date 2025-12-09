@@ -167,19 +167,19 @@ class SendDailyOrdersToEmaar extends Command
                 ]);
             }
         }
-        // $obj = new stdClass();
+        $obj = new stdClass();
 
-        // $obj->UnitNo = $branch_unit_no;
-        // $obj->LeaseCode = $branch_lease_code;
-        // $obj->SalesDate = $yesterday;
-        // $obj->TransactionCount = $yesterday_orders->count();
-        // $obj->NetSales = round($yesterday_orders->sum('net_amount_without_tax'), 2);
-        // $obj->Ch_DineIn = $Ch_DineIn;
-        // $obj->Ch_Talabat = $Ch_Talabat;
-        // $obj->Ch_Drivu = $Ch_Drivu;
-        // $obj->Ch_DineIncnt = $Ch_DineIncnt;
-        // $obj->Ch_Talabatcnt = $Ch_Talabatcnt;
-        // $obj->Ch_Drivucnt =$Ch_Drivucnt;
+        $obj->UnitNo = $branch_unit_no;
+        $obj->LeaseCode = $branch_lease_code;
+        $obj->SalesDate = $yesterday;
+        $obj->TransactionCount = $yesterday_orders->count();
+        $obj->NetSales = round($yesterday_orders->sum('net_amount_without_tax'), 2);
+        $obj->Ch_DineIn = $Ch_DineIn;
+        $obj->Ch_Talabat = $Ch_Talabat;
+        $obj->Ch_Drivu = $Ch_Drivu;
+        $obj->Ch_DineIncnt = $Ch_DineIncnt;
+        $obj->Ch_Talabatcnt = $Ch_Talabatcnt;
+        $obj->Ch_Drivucnt =$Ch_Drivucnt;
 
         $response = curl_exec($curl);
         DB::table('logs')->insert([
