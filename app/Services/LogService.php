@@ -21,5 +21,15 @@ class LogService
             'created_at' => Carbon::now(),
         ]);
     }
+
+    public function getPaginated(int $perPage = 20): \Illuminate\Contracts\Pagination\LengthAwarePaginator
+    {
+        return DB::table('logs')->orderBy('id', 'desc')->paginate($perPage);
+    }
+
+    public function findById(int $id): ?object
+    {
+        return DB::table('logs')->find($id);
+    }
 }
 

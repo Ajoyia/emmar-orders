@@ -1,35 +1,32 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\Branch;
-use App\Models\PaymentMethod;
-use Illuminate\Http\Request;
+
+use App\Services\BranchService;
+use App\Services\PaymentMethodService;
+use Illuminate\View\View;
 
 class HomeController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    private BranchService $branchService;
+    private PaymentMethodService $paymentMethodService;
+
+    public function __construct(BranchService $branchService, PaymentMethodService $paymentMethodService)
     {
         $this->middleware('auth');
+        $this->branchService = $branchService;
+        $this->paymentMethodService = $paymentMethodService;
     }
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
-    public function index()
+    public function index(): View
     {
-        $branches = Branch::orderBy('id','desc')->paginate(10);
+        $branches = $this->branchService->getPaginated(10);
         return view('home', compact('branches'));
     }
-    public function paymentMethods()
+
+    public function paymentMethods(): View
     {
-         $payment_methods = PaymentMethod::orderBy('id', 'desc')->paginate(10);
+        $payment_methods = $this->paymentMethodService->getPaginated(10);
         return view('payment-methods', compact('payment_methods'));
     }
 }

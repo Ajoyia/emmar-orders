@@ -2,114 +2,64 @@
 
 namespace App\Http\Controllers;
 
-use App\Jobs\ListOrders;
-use App\Models\Order;
+use App\Http\Requests\StorePaymentMethodRequest;
+use App\Http\Requests\UpdatePaymentMethodRequest;
 use App\Models\PaymentMethod;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use App\Services\PaymentMethodService;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
 class PaymentMethodController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    private PaymentMethodService $paymentMethodService;
+
+    public function __construct(PaymentMethodService $paymentMethodService)
     {
-        $payment = PaymentMethod::orderBy('id', 'desc')->paginate(5);
-        return view('home', compact('branches'));
+        $this->paymentMethodService = $paymentMethodService;
     }
 
+    public function index(): View
+    {
+        $payment_methods = $this->paymentMethodService->getPaginated(5);
+        return view('payment-methods', compact('payment_methods'));
+    }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function create(): View
     {
         return view('payment_methods.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function store(StorePaymentMethodRequest $request): RedirectResponse
     {
-        $request->validate([
-            'payment_id' => 'required',
-            'name' => 'required',
-            'emmar_mapping' => 'required'
-        ]);
-
-        PaymentMethod::create([
-            'payment_id' => $request->payment_id,
-            'name' => $request->name,
-            'payment_id' => $request->payment_id,
-            'emmar_mapping' => $request->emmar_mapping,
-            'share_with_emaar' =>  (int) $request->share_with_emaar,
-        ]);
+        $data = $request->validated();
+        $data['share_with_emaar'] = (int) ($request->share_with_emaar ?? 0);
+        
+        $this->paymentMethodService->create($data);
         return redirect()->route('payment.methods')->with('success', 'Payment Method has been created successfully.');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Branch  $Branch
-     * @return \Illuminate\Http\Response
-     */
-    public function show(PaymentMethod $branch)
+    public function show(PaymentMethod $payment): View
     {
-        return view('payment_methods.show', compact('branch'));
+        return view('payment_methods.show', compact('payment'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Branch  $branch
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(PaymentMethod $payment)
+    public function edit(PaymentMethod $payment): View
     {
         return view('payment_methods.edit', compact('payment'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\PaymentMethod  $Branch
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, PaymentMethod $branch)
+    public function update(UpdatePaymentMethodRequest $request, PaymentMethod $payment): RedirectResponse
     {
-        $request->validate([
-            'name' => 'required',
-            'emmar_mapping' => 'required'
-        ]);
-        $model = PaymentMethod::find($request->id);
-
-        $model->emmar_mapping = $request->emmar_mapping;
-        $model->name = $request->name;
-        $model->share_with_emaar = (int) $request->share_with_emaar;
-        $model->save(); // 
-
-        return redirect()->route('payment.methods')->with('success', 'Branch Has Been updated successfully');
+        $data = $request->validated();
+        $data['share_with_emaar'] = (int) ($request->share_with_emaar ?? 0);
+        
+        $this->paymentMethodService->update($payment, $data);
+        return redirect()->route('payment.methods')->with('success', 'Payment Method Has Been updated successfully');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Branch  $Branch
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(PaymentMethod $payment)
+    public function destroy(PaymentMethod $payment): RedirectResponse
     {
-        $payment->delete();
+        $this->paymentMethodService->delete($payment);
         return redirect()->route('payment.methods')->with('success', 'Payment has been deleted successfully');
     }
 }
