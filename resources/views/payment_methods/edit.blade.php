@@ -1,75 +1,57 @@
 @extends('layouts.app')
 
 @section('content')
+<div class="py-12">
+    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+            <div class="p-6 text-gray-900 dark:text-gray-100">
+                <div class="container mt-2">
+                    <x-page-header 
+                        title="Edit Payment Method" 
+                        :backUrl="route('payment.methods')" 
+                    />
 
-<div class="container mt-2">
-    <div class="row">
-        <div class="col-md-6">
-            <h3>
-                Edit Payment Method
-            </h3>
-        </div>
-        <div class="col-md-6" style="text-align:right;">
+                    <x-alert type="success" :message="session('status')" />
 
-            <a class="btn btn-primary" href="{{ url('payment-methods') }}"> Back</a>
-        </div>
-
-
-        <div class="col-lg-12 margin-tb">
-            <div class="pull-left">
-            </div>
-            <div class="pull-right mb-2">
+                    <form action="{{ route('payments.update', $payment->id) }}" method="POST">
+                        @csrf
+                        @method('PUT')
+                        <input type="hidden" name="id" value="{{ $payment->id }}">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <x-form-group 
+                                    label="Payment Method Name" 
+                                    name="name" 
+                                    :value="$payment->name" 
+                                    placeholder="Payment Method Name" 
+                                    required 
+                                />
+                            </div>
+                            <div class="col-md-12">
+                                <x-form-group 
+                                    label="Emaar Mapping" 
+                                    name="emmar_mapping" 
+                                    :value="$payment->emmar_mapping" 
+                                    placeholder="Emaar Mapping" 
+                                />
+                            </div>
+                            <div class="col-md-12">
+                                <x-form-group 
+                                    label="Share With Emaar" 
+                                    name="share_with_emaar" 
+                                    type="select"
+                                    :options="[1 => 'Yes', 0 => 'No']"
+                                    :selected="$payment->share_with_emaar"
+                                />
+                            </div>
+                            <div class="col-md-12 text-right mt-3">
+                                <button type="submit" class="btn btn-success">Submit</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-    @if(session('status'))
-    <div class="alert alert-success mb-1 mt-1">
-        {{ session('status') }}
-    </div>
-    @endif
-    <form action="{{ route('payments.update',$payment->id) }}" method="POST" enctype="multipart/form-data">
-        @csrf
-        @method('PUT')
-        <div class="row">
-            <div class="col-xs-12 col-sm-12 col-md-12">
-                <input type="hidden" name="id" value="{{ $payment->id }}">
-                <div class="form-group">
-                    <strong>Payment Method Name:</strong>
-                    <input type="text" name="name" value="{{ $payment->name }}" class="form-control" placeholder="branch name">
-                    @error('name')
-                    <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
-                    @enderror
-                </div>
-            </div>
-            <div class="col-xs-12 col-sm-12 col-md-12">
-                <div class="form-group">
-                    <strong>Emaar Mapping:</strong>
-                    <input type="text" name="emmar_mapping" class="form-control" placeholder="Emaar Mapping" value="{{ $payment->emmar_mapping }}">
-                    @error('emmar_mapping')
-                    <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
-                    @enderror
-                </div>
-            </div>
-            <div class="col-xs-12 col-sm-12 col-md-12">
-                <div class="form-group">
-                    <strong> Share With Emaar:</strong>
-                    <select name="share_with_emaar" class="form-control" id="share_with_emaar">
-                        <option value=1 {{ $payment->share_with_emaar == 1 ? 'selected' : '' }}>Yes</option>
-                        <option value=0 {{ $payment->share_with_emaar == 0 ? 'selected' : '' }}>No</option>
-                    </select>
-                    @error('share_with_emaar')
-                    <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
-                    @enderror
-                </div>
-            </div>
-
-            <div class="col-md-6">
-
-            </div>
-            <div class="col-md-6" style="text-align:right;">
-                <button type="submit" class="btn btn-success">Submit</button>
-            </div>
-        </div>
-    </form>
 </div>
 @endsection
